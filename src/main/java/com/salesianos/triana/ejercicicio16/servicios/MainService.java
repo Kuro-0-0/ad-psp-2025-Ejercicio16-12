@@ -28,8 +28,8 @@ public class MainService {
         Event newEvent = Event.builder()
                 .title(event.getTitle())
                 .description(event.getDescription())
-                .venue(venueRepository.findById(event.getVenue().getId()).orElseThrow(NoSuchElementException::new))
-                .organizer(organizerRepository.findById(event.getOrganizer().getId()).orElseThrow(NoSuchElementException::new))
+                .venue(venueRepository.getReferenceById(event.getVenue().getId()))
+                .organizer(organizerRepository.getReferenceById(event.getOrganizer().getId()))
                 .build();
         return eventRepository.save(newEvent);
     }
@@ -56,16 +56,14 @@ public class MainService {
     };
 
     public StaffAssignment assignStaffToEvent(StaffAssignment staffAssignment) {
-        Attendee attendee = attendeeRepository.findById(staffAssignment.getAttendee().getId()).orElseThrow(NoSuchElementException::new);
-        Event event = eventRepository.findById(staffAssignment.getEvent().getId()).orElseThrow(NoSuchElementException::new);
 
         StaffAssignment newStaffAssignment = StaffAssignment.builder()
                 .role(staffAssignment.getRole())
                 .shiftStart(staffAssignment.getShiftStart())
                 .shiftEnd(staffAssignment.getShiftEnd())
                 .paid(staffAssignment.isPaid())
-                .attendee(attendee)
-                .event(event)
+                .attendee(attendeeRepository.getReferenceById(staffAssignment.getAttendee().getId()))
+                .event(eventRepository.getReferenceById(staffAssignment.getEvent().getId()))
                 .build();
 
         return staffAssignmentRepository.save(newStaffAssignment);
