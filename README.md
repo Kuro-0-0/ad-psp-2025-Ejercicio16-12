@@ -1,0 +1,1 @@
+# Kuro-0-0-ad-psp-2025-Ejercicio16-12
