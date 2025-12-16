@@ -14,9 +14,12 @@ import java.time.LocalDateTime;
 @Builder
 public class StaffAssignment {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+//    @Id
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    private Long id;
+
+    @EmbeddedId
+    private StaffAssignmentPK id = new StaffAssignmentPK();
 
     @Enumerated(EnumType.STRING)
     private Role role;
@@ -25,10 +28,12 @@ public class StaffAssignment {
     private boolean paid;
 
     @ManyToOne
+    @MapsId("attendeeId")
     @JoinColumn(name = "attendee_id")
     private Attendee attendee;
 
     @ManyToOne
+    @MapsId("eventId")
     @JoinColumn(name = "event_id")
     private Event event;
 
